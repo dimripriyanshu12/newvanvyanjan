@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Van Vyanjan - Login</title>
+  <link rel="stylesheet" href="abc1.css">
+</head>
+<body>
+
+<div class="auth-container">
+
+  <div class="auth-box">
+
+    <div class="auth-toggle">
+      <button onclick="showLogin()">Login</button>
+      <button onclick="showSignup()">Sign Up</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm">
+      <h2>Login to Van Vyanjan</h2>
+
+      <input type="text" id="loginUser" placeholder="Username" required>
+
+      <div class="password-box">
+        <input type="password" id="loginPass" placeholder="Password" required>
+        <span onclick="togglePassword('loginPass')">👁</span>
+      </div>
+
+      <label>
+        <input type="checkbox" id="rememberMe"> Remember Me
+      </label>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signupForm" style="display:none;">
+      <h2>Create Account 🚀</h2>
+
+      <input type="text" id="signupUser" placeholder="Username" required>
+      <input type="email" id="signupEmail" placeholder="Email" required>
+
+      <div class="password-box">
+        <input type="password" id="signupPass" placeholder="Password" required onkeyup="checkStrength()">
+        <span onclick="togglePassword('signupPass')">👁</span>
+      </div>
+
+      <div id="strengthMeter"></div>
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+  </div>
+
+</div>
+
+<script src="abc.js"></script>
+</body>
+</html>

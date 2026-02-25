@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Van Vyanjan Dashboard</title>
+  <link rel="stylesheet" href="abc.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<header>
+  <h2>Van Vyanjan Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+  <button onclick="toggleDark()">🌙</button>
+</header>
+
+<div class="menu">
+  <button onclick="showSection('profile')">Health Profile</button>
+  <button onclick="showSection('grocery')">Grocery</button>
+  <button onclick="showSection('nutrition')">Disease Nutrition</button>
+  <button onclick="showSection('activity')">Activity Tracking</button>
+  <button onclick="showSection('seasonal')">Seasonal Food</button>
+  <button onclick="showSection('barter')">Barter System</button>
+  <button onclick="showSection('store')">Store Locator</button>
+  <button onclick="showSection('expert')">Ask Expert</button>
+  <button onclick="showSection('orders')">Order History</button>
+</div>
+
+<!-- Sections -->
+
+<div id="profile" class="section">
+  <h3>🔐 Health Profile</h3>
+
+  <label>Name</label>
+  <input type="text" placeholder="Enter Name">
+
+  <label>Age</label>
+  <input type="number" placeholder="Enter Age">
+
+  <label>Gender</label>
+  <select>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+<br><br>
+  <label>Height (cm)</label>
+  <input type="number" placeholder="Height">
+
+  <label>Weight (kg)</label>
+  <input type="number" placeholder="Weight">
+
+ <button onclick="saveProfile()">Save & Calculate BMI</button>
+
+  <p id="bmiResult"></p>
+</div>
+
+<div id="grocery" class="section" style="display:none;">
+  <h3>🛒 Online Grocery Store</h3>
+<label>Select Store</label>
+<select id="storeSelect" onchange="changeStore()">
+  <option value="Block A Store">Block A Store</option>
+  <option value="Block B Store">Block B Store</option>
+  <option value="Food Forest Center">Food Forest Center</option>
+</select>
+  <div class="products">
+
+    <div class="product-card">
+      <h4>Mandua</h4>
+      <p>₹40 / kg</p>
+      <button onclick="addToCart('Mandua',40)">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <h4>Jhangora</h4>
+      <p>₹60 / kg</p>
+      <button onclick="addToCart('Jhangora',60)">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <h4>Rajma</h4>
+      <p>₹120 / kg</p>
+      <button onclick="addToCart('Rajma',120)">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <h4>Malta</h4>
+      <p>₹50 / kg</p>
+      <button onclick="addToCart('Malta',50)">Add to Cart</button>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <h3>🛍 Your Cart</h3>
+  <div id="cartContainer"></div>
+
+  <h4>Total: ₹<span id="cartTotal">0</span></h4>
+
+  <button onclick="clearCart()" class="danger-btn">Clear Cart</button>
+  <button onclick="checkout()" class="checkout-btn">Proceed to Checkout</button>
+</div>
+<div id="checkoutSection" class="section" style="display:none;">
+  <h3>💳 Checkout</h3>
+
+  <div id="billSummary"></div>
+
+  <label>Select Payment Method</label>
+  <select id="paymentMethod">
+    <option>UPI</option>
+    <option>Card</option>
+    <option>Cash on Delivery</option>
+  </select>
+
+  <button onclick="placeOrder()">Place Order</button>
+</div>
+<div id="orders" class="section" style="display:none;">
+  <h3>📦 Order History</h3>
+  <div id="orderHistory"></div>
+</div>
+<div id="nutrition" class="section" style="display:none;">
+  <h3>❤️ Smart Nutrition Assistant</h3>
+
+  <div class="tabs">
+    <button onclick="openTab('aiTab')">AI Recommendation</button>
+    <button onclick="openTab('searchTab')">Search Nutrients</button>
+    <button onclick="openTab('riskTab')">Risk Score</button>
+    <button onclick="openTab('dietTab')">Diet Plan</button>
+  </div>
+
+  <!-- AI TAB -->
+  <div id="aiTab" class="tab-content">
+    <label>Select Disease</label>
+    <select id="aiDisease">
+      <option>Diabetes</option>
+      <option>Anemia</option>
+      <option>Hypertension</option>
+      <option>Obesity</option>
+    </select>
+    <br><br>
+    <label>Enter Age</label>
+    <input type="number" id="aiAge">
+
+    <label>Enter BMI</label>
+    <input type="number" id="aiBMI">
+
+    <button onclick="generateAIRecommendation()">Generate Recommendation</button>
+
+    <div id="aiResult"></div>
+    <canvas id="nutritionChart"></canvas>
+  </div>
+
+  <!-- SEARCH TAB -->
+  <div id="searchTab" class="tab-content" style="display:none;">
+    <label>Search by Nutrient</label>
+    <select id="nutrientSelect">
+      <option value="iron">Iron</option>
+      <option value="protein">Protein</option>
+      <option value="fiber">Fiber</option>
+    </select>
+
+    <button onclick="searchFood()">Search</button>
+    <div id="searchResult"></div>
+  </div>
+
+  <!-- RISK TAB -->
+  <div id="riskTab" class="tab-content" style="display:none;">
+    <label>Age</label>
+    <input type="number" id="riskAge">
+
+    <label>BMI</label>
+    <input type="number" id="riskBMI">
+
+    <label>Steps per day</label>
+    <input type="number" id="riskSteps">
+
+    <button onclick="calculateRisk()">Calculate Risk</button>
+
+    <div id="riskResult"></div>
+  </div>
+
+  <!-- DIET PLAN TAB -->
+  <div id="dietTab" class="tab-content" style="display:none;">
+    <button onclick="generateDietPlan()">Generate Diet Plan</button>
+    <div id="dietResult"></div>
+  </div>
+</div>
+
+<div id="activity" class="section">
+  <h2>👣 Smart Activity Tracking</h2>
+
+  <div class="activity-wrapper">
+
+    <!-- Circular Progress -->
+    <div class="progress-card">
+      <svg class="progress-ring" width="160" height="160">
+        <circle class="bg" cx="80" cy="80" r="70"></circle>
+        <circle class="progress" cx="80" cy="80" r="70"></circle>
+      </svg>
+      <div class="progress-text">
+        <h3 id="stepCount">0</h3>
+        <p>Steps</p>
+      </div>
+      <input type="number" id="stepsInput" placeholder="Enter steps">
+      <button onclick="addSteps()">Add Steps</button>
+      <button onclick="resetSteps()" class="reset-btn">Reset Today</button>
+    </div>
+
+    <!-- Goal Tracker -->
+    <div class="goal-card">
+      <h3>🎯 Daily Goal: 10,000 Steps</h3>
+      <div class="goal-bar">
+        <div id="goalProgress"></div>
+      </div>
+      <p id="goalPercent">0%</p>
+    </div>
+
+    <!-- Health Score -->
+    <div class="health-card">
+      <h3>💚 Health Score</h3>
+      <div class="health-meter">
+        <div id="healthFill"></div>
+      </div>
+      <p id="healthScore">0 / 100</p>
+    </div>
+
+    <!-- Streak Counter -->
+    <div class="streak-card">
+      <h3>🔥 Activity Streak</h3>
+      <p id="streakCount">0 Days</p>
+    </div>
+
+  </div>
+</div>
+
+<div id="seasonal" class="section">
+  <h2>🌿 Seasonal Food Mapping</h2>
+
+  <!-- Current Season Auto Detection -->
+  <div class="season-current-box">
+    <h3>Current Season: <span id="currentSeason"></span></h3>
+    <p id="currentFoods"></p>
+  </div>
+
+  <!-- Interactive Calendar -->
+  <div class="season-calendar">
+    <div class="season-card" onclick="showSeason('Spring')">🌸 Spring<br><small>Mar–Apr</small></div>
+    <div class="season-card" onclick="showSeason('Summer')">☀ Summer<br><small>May–Jun</small></div>
+    <div class="season-card" onclick="showSeason('Monsoon')">🌧 Monsoon<br><small>Jul–Sep</small></div>
+    <div class="season-card" onclick="showSeason('Winter')">❄ Winter<br><small>Oct–Feb</small></div>
+  </div>
+
+  <!-- Map Style Display -->
+  <div class="season-map-box">
+    <h3>🗺 Regional Availability (Example: Uttarakhand)</h3>
+    <div id="mapDisplay"></div>
+  </div>
+
+  <!-- Food Cards -->
+  <div id="seasonFoodContainer" class="season-food-grid"></div>
+</div>
+
+<div id="barter" class="section" style="display:none;">
+  <div class="exchange-box">
+  <h3>🔄 Exchange Option</h3>
+
+  <select id="produceSelect">
+    <option value="Malta">Malta</option>
+    <option value="Rajma">Rajma</option>
+    <option value="Kafal">Kafal</option>
+    <option value="Gahat">Gahat</option>
+  </select>
+
+  <input type="number" id="produceQty" placeholder="Enter Quantity (kg)">
+  
+  <button onclick="calculateExchange()">Check Exchange Value</button>
+
+  <div id="exchangeResult"></div>
+</div>
+</div>
+
+<div id="store" class="section" style="display:none;">
+  <h3>📍 Nearby Store Locator</h3>
+
+  <p>GPS-based store search.</p>
+  <p>Shows nearest block-level food store.</p>
+
+  <button>Detect My Location</button>
+<div id="map" style="height:400px;"></div>
+  <p>Store Hours: 9 AM - 6 PM</p>
+</div>
+<div id="expert" class="section" style="display:none;">
+  <section id="askExpertSection">
+  <h2>🩺 Ask Health Expert</h2>
+
+  <div class="expert-form">
+    <select id="expertCategory">
+      <option value="Nutrition">Nutrition</option>
+      <option value="Disease">Disease</option>
+      <option value="Mental Health">Mental Health</option>
+      <option value="Fitness">Fitness</option>
+    </select>
+
+    <select id="priorityLevel">
+      <option value="Normal">Normal</option>
+      <option value="Urgent">Urgent</option>
+    </select>
+
+    <textarea id="expertQuestion" placeholder="Describe your problem..."></textarea>
+
+    <input type="file" id="expertFile">
+
+    <button onclick="submitQuestion()">Submit Question</button>
+  </div>
+
+  <h3>📩 My Queries</h3>
+  <div id="expertHistory"></div>
+</section>
+<div class="booking-box">
+  <h3>📞 Book Live Consultation</h3>
+
+  <select id="expertType">
+    <option value="Nutritionist">Nutritionist</option>
+    <option value="Doctor">Doctor</option>
+    <option value="Psychologist">Psychologist</option>
+  </select>
+
+  <input type="date" id="bookingDate">
+  <input type="time" id="bookingTime">
+
+  <button onclick="bookExpert()">Book Appointment</button>
+
+  <div id="bookingHistory"></div>
+</div>
+
+</div>
+<script src="dashboard1.js"></script>
+<script async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="orderPopup" class="popup">
+  <div class="popup-content">
+    <h3>🎉 Order Confirmed!</h3>
+    <p>Your order has been placed successfully.</p>
+    <button onclick="closePopup()">Close</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </div>
+</div>
+</body>
+</html>
