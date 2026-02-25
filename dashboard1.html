@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Van Vyanjan Dashboard</title>
+  <link rel="stylesheet" href="abc.css">
+</head>
+<body>
+
+<header>
+  <h2>Van Vyanjan Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+  <button onclick="toggleDark()">🌙</button>
+</header>
+
+<div class="menu">
+  <button onclick="showSection('profile')">Health Profile</button>
+  <button onclick="showSection('grocery')">Grocery</button>
+  <button onclick="showSection('nutrition')">Disease Nutrition</button>
+  <button onclick="showSection('activity')">Activity Tracking</button>
+  <button onclick="showSection('seasonal')">Seasonal Food</button>
+  <button onclick="showSection('barter')">Barter System</button>
+  <button onclick="showSection('store')">Store Locator</button>
+  <button onclick="showSection('expert')">Ask Expert</button>
+</div>
+
+<!-- Sections -->
+
+<div id="profile" class="section">
+  <h3>🔐 Health Profile</h3>
+
+  <label>Name</label>
+  <input type="text" placeholder="Enter Name">
+
+  <label>Age</label>
+  <input type="number" placeholder="Enter Age">
+
+  <label>Gender</label>
+  <select>
+    <option>Male</option>
+    <option>Female</option>
+    <option>Other</option>
+  </select>
+<br><br>
+  <label>Height (cm)</label>
+  <input type="number" placeholder="Height">
+
+  <label>Weight (kg)</label>
+  <input type="number" placeholder="Weight">
+
+ <button onclick="saveProfile()">Save & Calculate BMI</button>
+
+  <p id="bmiResult"></p>
+</div>
+
+<div id="grocery" class="section" style="display:none;">
+  <h3>🛒 Online Grocery</h3>
+
+  <div class="product" data-name="Mandua" data-price="40">
+    Mandua – ₹40/kg
+    <button onclick="addToCart('Mandua',40)">Add</button>
+  </div>
+
+  <div class="product" data-name="Jhangora" data-price="60">
+    Jhangora – ₹60/kg
+    <button onclick="addToCart('Jhangora',60)">Add</button>
+  </div>
+
+  <div class="product" data-name="Rajma" data-price="120">
+    Rajma – ₹120/kg
+    <button onclick="addToCart('Rajma',120)">Add</button>
+  </div>
+
+  <div class="product" data-name="Malta" data-price="50">
+    Malta – ₹50/kg
+    <button onclick="addToCart('Malta',50)">Add</button>
+  </div>
+
+  <h4>🛍 Cart</h4>
+  <ul id="cartList"></ul>
+  <h4>Total: ₹<span id="totalPrice">0</span></h4>
+</div>
+
+<div id="nutrition" class="section" style="display:none;">
+  <h3>❤️ Disease Nutrition</h3>
+
+  <select>
+    <option>Anemia</option>
+    <option>Diabetes</option>
+    <option>Hypertension</option>
+    <option>Obesity</option>
+    <option>Osteoporosis</option>
+  </select>
+
+  <p><b>Example Suggestions:</b></p>
+  <ul>
+    <li>Iron rich foods for Anemia</li>
+    <li>Low sugar foods for Diabetes</li>
+    <li>Low salt foods for BP</li>
+  </ul>
+</div>
+
+<div id="activity" class="section" style="display:none;">
+  <h3>👣 Activity Tracking</h3>
+
+  <p>Step Counter: (Connect Mobile Sensor)</p>
+
+  <p>BMI Status:</p>
+  <div id="bmiStatus">Not Calculated</div>
+
+  <p>Daily Goal: 8000 Steps</p>
+  <canvas id="healthChart"></canvas>
+</div>
+
+<div id="seasonal" class="section" style="display:none;">
+  <h3>🗓 Seasonal Food</h3>
+
+  <h4>Spring</h4>
+  <p>Lingda, Kandali</p>
+
+  <h4>Summer</h4>
+  <p>Kafal, Aadu</p>
+
+  <h4>Winter</h4>
+  <p>Palak, Gajar</p>
+
+  <p>Season-based recommendations will appear here.</p>
+</div>
+<div id="barter" class="section" style="display:none;">
+  <h3>🔄 Barter System</h3>
+
+  <p>Exchange surplus food locally.</p>
+
+  <label>Available Item</label>
+  <input type="text" placeholder="e.g., Malta">
+
+  <label>Quantity</label>
+  <input type="number">
+
+  <button>Check Exchange Value</button>
+
+  <p>Example: 2kg Malta = 1kg Rajma</p>
+</div>
+
+<div id="store" class="section" style="display:none;">
+  <h3>📍 Nearby Store Locator</h3>
+
+  <p>GPS-based store search.</p>
+  <p>Shows nearest block-level food store.</p>
+
+  <button>Detect My Location</button>
+<div id="map" style="height:400px;"></div>
+  <p>Store Hours: 9 AM - 6 PM</p>
+</div>
+<div id="expert" class="section" style="display:none;">
+  <h3>👩‍⚕ Ask a Counselor / Expert</h3>
+
+  <textarea rows="4" placeholder="Write your health question..."></textarea>
+
+  <button>Submit Question</button>
+
+  <p>Get guidance from certified nutrition experts.</p>
+</div>
+<script src="dashboard1.js"></script>
+<script async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
